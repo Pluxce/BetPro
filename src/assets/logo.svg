@@ -1,0 +1,14 @@
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond du logo -->
+  <rect width="120" height="40" rx="8" fill="#2563EB" />
+  
+  <!-- Texte BetPro -->
+  <text x="10" y="28" font-family="Arial" font-weight="bold" font-size="24" fill="white">Bet<tspan fill="#93C5FD">Pro</tspan></text>
+  
+  <!-- Icône graphique -->
+  <path d="M90 12L98 20L90 28" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M82 20H98" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Point d'accent -->
+  <circle cx="105" cy="20" r="4" fill="#93C5FD"/>
+</svg>
