@@ -33,12 +33,18 @@ const CouponDetails: React.FC<CouponDetailsProps> = ({ coupon, onPurchase, isPur
         variant="success"
         onClose={() => setShowSuccess(false)}
       />
-      <div className="fixed inset-0 bg-white z-50 overflow-y-auto transform transition-all duration-300 hover:shadow-2xl">
+      <div 
+        className="fixed inset-0 bg-white z-50 overflow-y-auto transform transition-all duration-300 hover:shadow-2xl"
+        style={{
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch'
+        }}
+      >
         {/* En-tête avec effet parallax */}
-        <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 p-8 overflow-hidden">
+        <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 p-4 sm:p-8 overflow-hidden">
           <div className="absolute inset-0 bg-pattern opacity-10"></div>
-          <h2 className="text-3xl font-bold mb-4 text-white relative z-10 animate-fade-in">{coupon.name}</h2>
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 relative z-10">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-white relative z-10 animate-fade-in">{coupon.name}</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 relative z-10">
             <div className="flex flex-wrap items-center gap-4">
               <span className={`px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm ${
                 coupon.riskLevel === 'faible' ? 'bg-green-500/30 text-green-100' :
@@ -58,12 +64,12 @@ const CouponDetails: React.FC<CouponDetailsProps> = ({ coupon, onPurchase, isPur
         </div>
 
         {/* Description */}
-        <div className="p-8 border-b border-gray-200 bg-gradient-to-b from-gray-50 to-white">
+        <div className="p-4 sm:p-8 border-b border-gray-200 bg-gradient-to-b from-gray-50 to-white">
           <p className="text-gray-700 leading-relaxed">{coupon.description}</p>
         </div>
 
         {/* Sélections */}
-        <div className="p-8 bg-gradient-to-b from-white to-gray-50">
+        <div className="p-4 sm:p-8 bg-gradient-to-b from-white to-gray-50">
           <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
             <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -124,7 +130,7 @@ const CouponDetails: React.FC<CouponDetailsProps> = ({ coupon, onPurchase, isPur
                           Analyse détaillée:
                         </h5>
                         {selection.category === 'match' ? (
-                          <div className="grid grid-cols-2 gap-6">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                             <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
                               <div className="flex items-center gap-2 mb-3">
                                 <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -147,7 +153,7 @@ const CouponDetails: React.FC<CouponDetailsProps> = ({ coupon, onPurchase, isPur
                             </div>
                           </div>
                         ) : selection.category === 'player_performance' ? (
-                          <div className="grid grid-cols-2 gap-6">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                             <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
                               <div className="flex items-center gap-2 mb-3">
                                 <svg className="w-4 h-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -170,7 +176,7 @@ const CouponDetails: React.FC<CouponDetailsProps> = ({ coupon, onPurchase, isPur
                             </div>
                           </div>
                         ) : (
-                          <div className="grid grid-cols-2 gap-6">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                             <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
                               <div className="flex items-center gap-2 mb-3">
                                 <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
