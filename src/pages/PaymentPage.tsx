@@ -97,7 +97,7 @@ const PaymentPage: React.FC = () => {
               <label className="block text-sm font-medium text-gray-700">
                 Méthode de paiement
               </label>
-              <div className="relative grid grid-cols-2 gap-8 min-h-[240px]">
+              <div className="relative grid grid-cols-2 gap-4 sm:gap-8 min-h-[240px] items-center justify-center overflow-visible">
                 {paymentMethods.map((method) => {
                   const isSelected = selectedMethod === method.id;
                   return (
@@ -106,29 +106,26 @@ const PaymentPage: React.FC = () => {
                       type="button"
                       onClick={() => setSelectedMethod(method.id)}
                       className={`
-                        absolute w-[calc(50%-8px)] transform transition-all duration-500 ease-in-out
+                        relative w-full transform transition-all duration-500 ease-out
                         flex flex-col items-center p-4 rounded-xl border-2
                         ${isSelected
-                          ? `${method.color} border-transparent text-white shadow-lg scale-110 z-10 left-1/2 -translate-x-1/2`
-                          : `border-gray-200 hover:border-gray-300 text-gray-600 hover:bg-gray-50 scale-90
-                             ${selectedMethod ? 'opacity-50' : ''}
-                             ${method.id === 'wave' ? 'left-0 top-0' :
-                               method.id === 'orange' ? 'right-0 top-0' :
-                               method.id === 'moov' ? 'left-0 bottom-0' :
-                               'right-0 bottom-0'}`
+                          ? `${method.color} border-transparent text-white shadow-xl z-20`
+                          : `border-gray-200 hover:border-gray-300 text-gray-600 hover:bg-gray-50
+                             ${selectedMethod ? 'opacity-30 blur-[1px]' : ''}`
                         }`}
                       style={{
-                        transform: isSelected
-                          ? 'translate(-50%, 0) scale(1.1)'
-                          : selectedMethod
-                            ? `translate(${method.id === 'wave' || method.id === 'moov' ? '-10%' : '10%'}, ${method.id === 'wave' || method.id === 'orange' ? '-10%' : '10%'}) scale(0.9)`
-                            : 'none'
+                        transformOrigin: 'center center',
+                        transform: `
+                          scale(${isSelected ? 1.25 : selectedMethod ? 0.75 : 1})
+                          translateY(${isSelected ? '-15%' : selectedMethod ? '15%' : '0'})
+                          translateX(${isSelected ? (method.id === 'wave' || method.id === 'moov' ? '15%' : '-15%') : '0'})
+                        `
                       }}
                     >
                       <div className={`
                         w-12 h-12 rounded-full bg-white p-1.5 shadow-md overflow-hidden
                         flex items-center justify-center transition-all duration-500
-                        ${isSelected ? 'scale-125' : ''}
+                        ${isSelected ? 'scale-125' : selectedMethod ? 'scale-75' : ''}
                       `}>
                         <img src={method.logo} alt={method.name} className="w-full h-full object-cover rounded-full" />
                       </div>

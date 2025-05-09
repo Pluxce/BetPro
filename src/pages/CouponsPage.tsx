@@ -83,6 +83,7 @@ const CouponsPage: React.FC = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<BettingCouponType | null>(null);
   const [isViewingDetails, setIsViewingDetails] = useState(false);
   const [purchasedCoupons, setPurchasedCoupons] = useState<string[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const categories = [
     { id: 'all', name: 'Tous les coupons' },
@@ -128,33 +129,17 @@ const CouponsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Coupons Premium</h1>
-          <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Coupons Premium</h1>
+          <p className="mt-3 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
             Découvrez nos sélections expertisées pour optimiser vos paris
           </p>
         </div>
 
         <div className={`transition-all duration-300 transform ${isViewingDetails ? 'translate-x-[-100vw] opacity-0' : 'translate-x-0 opacity-100'}`}>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 bg-white/50 backdrop-blur-sm rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200/50">
-            <div className="w-full md:w-auto">
-              <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3">
-                {categories.map(category => (
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`px-4 sm:px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 w-full sm:w-auto text-center
-                      ${selectedCategory === category.id
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md transform hover:translate-y-[-1px]'
-                        : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md border border-gray-200/50'}`}
-                  >
-                    {category.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div className="w-full md:w-auto relative mt-4 md:mt-0">
+          {/* Barre de recherche avec filtre de catégories */}
+          <div className="mb-6 w-full flex gap-4 items-center">
+            <div className="relative flex-1">
               <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                 <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -163,16 +148,58 @@ const CouponsPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Rechercher un coupon..."
-                className="w-full md:w-72 pl-10 pr-4 py-2.5 rounded-full border border-gray-200/50 bg-white/50
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white
-                          transition-all duration-300 hover:shadow-md"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-4 rounded-lg border border-gray-200/50 bg-white/50
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white
+                           transition-all duration-300 hover:shadow-md"
               />
+            </div>
+            <div className="relative w-48">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full pl-4 pr-10 py-4 rounded-lg border border-gray-200/50 bg-white/50
+                         text-left text-gray-700 font-medium
+                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white
+                         transition-all duration-300 hover:shadow-md"
+              >
+                {categories.find(cat => cat.id === selectedCategory)?.name || 'Tous les coupons'}
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                  <svg 
+                    className={`h-5 w-5 text-gray-400 transform transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+
+              {isDropdownOpen && (
+                <div 
+                  className="absolute z-10 w-full mt-2 py-1 bg-white rounded-lg shadow-lg border border-gray-200/50
+                           animate-in fade-in duration-200 slide-in-from-top-2"
+                >
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => {
+                        setSelectedCategory(category.id);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200
+                                ${selectedCategory === category.id ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-700'}`}
+                    >
+                      {category.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredCoupons.map(coupon => (
               <CouponCard
                 key={coupon.id}
@@ -199,59 +226,39 @@ const CouponsPage: React.FC = () => {
               </button>
             </div>
           )}
-
-          {/* Vue détaillée */}
-          {selectedCoupon && (
-            <div 
-              className={`fixed inset-0 bg-white z-50 overflow-y-auto transition-transform duration-300 transform touch-pan-y
-                ${isViewingDetails ? 'translate-x-0' : 'translate-x-[100vw]'}`}
-              style={{
-                overscrollBehavior: 'contain',
-                WebkitOverflowScrolling: 'touch'
-              }}
-              onTouchStart={(e) => {
-                const touch = e.touches[0];
-                const startY = touch.pageY;
-                const handleTouchMove = (e: TouchEvent) => {
-                  const touch = e.touches[0];
-                  const currentY = touch.pageY;
-                  const diff = currentY - startY;
-                  if (diff > 100) {
-                    handleBackToList();
-                    document.removeEventListener('touchmove', handleTouchMove);
-                  }
-                };
-                document.addEventListener('touchmove', handleTouchMove);
-                document.addEventListener('touchend', () => {
-                  document.removeEventListener('touchmove', handleTouchMove);
-                }, { once: true });
-              }}
-            >
-              <div className="max-w-4xl mx-auto px-4 py-8">
-                <button
-                  onClick={handleBackToList}
-                  className="group flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors duration-200 mb-8"
-                >
-                  <svg 
-                    className="w-5 h-5 transform transition-transform duration-200 group-hover:translate-x-[-4px]" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
-                  <span>Retour à la liste</span>
-                </button>
-
-                <CouponDetails
-                  coupon={selectedCoupon}
-                  onPurchase={handlePurchase}
-                  isPurchased={purchasedCoupons.includes(selectedCoupon.id)}
-                />
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* Vue détaillée */}
+        {selectedCoupon && (
+          <div 
+            className={`fixed inset-0 bg-white z-50 overflow-y-auto transition-transform duration-300 transform
+              ${isViewingDetails ? 'translate-x-0' : 'translate-x-[100vw]'}`}
+          >
+            <div className="max-w-4xl mx-auto px-4 py-8">
+              <button
+                onClick={handleBackToList}
+                className="group flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors duration-200 mb-8"
+              >
+                <svg 
+                  className="w-5 h-5 transform transition-transform duration-200 group-hover:translate-x-[-4px]" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Retour à la liste</span>
+              </button>
+
+              <CouponDetails
+                coupon={selectedCoupon}
+                onPurchase={handlePurchase}
+                isPurchased={purchasedCoupons.includes(selectedCoupon.id)}
+                onBackToList={handleBackToList}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
